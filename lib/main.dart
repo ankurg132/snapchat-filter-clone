@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:google_mlkit_face_detection/google_mlkit_face_detection.dart';
@@ -5,6 +7,10 @@ import 'dart:ui' as ui;
 import 'package:flutter/services.dart';
 import 'detector_view.dart';
 import 'face_detector_painter.dart';
+import 'package:screen_recorder/screen_recorder.dart';
+// import 'package:record_widget/record_widget.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:path/path.dart' as path;
 
 late ui.Image goggleImage;
 late ui.Image helmetImage;
@@ -15,11 +21,21 @@ final FaceDetector faceDetector = FaceDetector(
     enableLandmarks: true,
   ),
 );
+ScreenRecorderController screenController = ScreenRecorderController(
+  pixelRatio: 0.5,
+  skipFramesBetweenCaptures: 2,
+);
+// late RecordWidgetController recordWidgetController;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   goggleImage = await loadImage('goggles.png');
   helmetImage = await loadImage('helmet.png');
+  final Directory appDocumentsDir = await getApplicationDocumentsDirectory();
+  final String videoDirectory = path.join(appDocumentsDir.path, 'videos');
+  // print("ag path init: " + videoDirectory);
+  // recordWidgetController = RecordWidgetController(
+  //     directory_folder_render: Directory(videoDirectory));
   runApp(const MyApp());
 }
 

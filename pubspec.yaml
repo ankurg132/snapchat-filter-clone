@@ -50,6 +50,8 @@ dev_dependencies:
   camera: ^0.10.5+9
   path_provider: ^2.1.2
   video_player: ^2.8.2
+  screen_recorder: ^0.2.0
+  # record_widget: ^0.0.11
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

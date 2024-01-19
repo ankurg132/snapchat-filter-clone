@@ -1,11 +1,13 @@
 import 'dart:io';
-
+import 'package:screen_recorder/screen_recorder.dart';
 import 'package:camera/camera.dart';
 import 'package:facefilterar/main.dart';
 import 'package:facefilterar/showvideos.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_mlkit_commons/google_mlkit_commons.dart';
+import 'package:path/path.dart' as path;
+import 'package:path_provider/path_provider.dart';
 
 class CameraView extends StatefulWidget {
   CameraView(
@@ -88,9 +90,15 @@ class _CameraViewState extends State<CameraView> {
                 ? Center(
                     child: const Text('Changing camera lens'),
                   )
-                : CameraPreview(
-                    _controller!,
-                    child: widget.customPaint,
+                : ScreenRecorder(
+                    background: Colors.black,
+                    height: MediaQuery.of(context).size.height,
+                    width: MediaQuery.of(context).size.width,
+                    controller: screenController,
+                    child: CameraPreview(
+                      _controller!,
+                      child: widget.customPaint,
+                    ),
                   ),
           ),
           _switchLiveCameraToggle(),
@@ -132,17 +140,41 @@ class _CameraViewState extends State<CameraView> {
             heroTag: Object(),
             onPressed: () async {
               if (isRecording) {
-                XFile? file = await _controller?.stopVideoRecording();
+                screenController.stop();
+                try {
+                  screenController.stop();
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        content: Center(child: CircularProgressIndicator()),
+                      );
+                    },
+                  );
+                  var gif = await screenController.exporter.exportGif();
+                  Navigator.of(context).pop();
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        content: Image.memory(Uint8List.fromList(gif ?? [])),
+                      );
+                    },
+                  );
+                  // Navigator.of(context).push(MaterialPageRoute(
+                  //   fullscreenDialog: true,
+                  //   builder: (_) => ShowVideoScreen(filePath: videoDirectory),
+                  // ));
+                } catch (e) {
+                  print("ag path erro: " + e.toString());
+                }
+                // XFile? file = await _controller?.stopVideoRecording();
                 setState(() {
                   isRecording = false;
                 });
-                Navigator.of(context).push(MaterialPageRoute(
-                  fullscreenDialog: true,
-                  builder: (_) => ShowVideoScreen(filePath: file?.path ?? ''),
-                ));
               } else {
-                await _controller?.prepareForVideoRecording();
-                await _controller?.startVideoRecording();
+                screenController.exporter.clear();
+                screenController.start();
                 setState(() {
                   isRecording = true;
                 });
