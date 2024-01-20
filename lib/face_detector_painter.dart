@@ -4,7 +4,6 @@ import 'package:facefilterar/main.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mlkit_face_detection/google_mlkit_face_detection.dart';
 import 'coordinates_translator.dart';
-import 'dart:ui' as ui;
 import 'package:flutter/services.dart';
 
 class FaceDetectorPainter extends CustomPainter {
@@ -138,16 +137,16 @@ class FaceDetectorPainter extends CustomPainter {
         }
       }
 
-      for (final type in FaceContourType.values) {
-        if (type == FaceContourType.rightEye) {
-          // paintGoggle(type);
-        }
-        paintContour(type);
-      }
+      // for (final type in FaceContourType.values) {
+      //   if (type == FaceContourType.rightEye) {
+      //     // paintGoggle(type);
+      //   }
+      //   // paintContour(type);
+      // }
 
-      for (final type in FaceLandmarkType.values) {
-        paintLandmark(type);
-      }
+      // for (final type in FaceLandmarkType.values) {
+      //   // paintLandmark(type);
+      // }
     }
   }
 

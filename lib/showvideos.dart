@@ -6,7 +6,6 @@ import 'package:video_player/video_player.dart';
 
 class ShowVideoScreen extends StatefulWidget {
   final String filePath;
-
   const ShowVideoScreen({Key? key, required this.filePath}) : super(key: key);
 
   @override
