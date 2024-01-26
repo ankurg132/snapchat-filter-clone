@@ -1,16 +1,9 @@
-# facefilterar
+# Snapchat Filter Clone
 
-A new Flutter project.
+A Flutter project developed using ML Kit by Google to mimic realtime face tracking and showing filters on the face. The project currently shows the option to toggle between 2 filters and record the video which is shown in GIF format as of now.
 
-## Getting Started
+### Screenshot
+![image](https://github.com/ankurg132/snapchat-filter-clone/assets/31045221/7ad558a4-e2c7-4561-a2b5-9b44a8fe5dff)
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### Report a Bug
+Found a bug? Feel free to raise an issue on GitHub and contribute!
