@@ -7,15 +7,14 @@ import 'package:flutter/services.dart';
 import 'package:google_mlkit_commons/google_mlkit_commons.dart';
 
 class CameraView extends StatefulWidget {
-  CameraView(
-      {Key? key,
+  const CameraView(
+      {super.key,
       required this.customPaint,
       required this.onImage,
       this.onCameraFeedReady,
       this.onDetectorViewModeChanged,
       this.onCameraLensDirectionChanged,
-      this.initialCameraLensDirection = CameraLensDirection.back})
-      : super(key: key);
+      this.initialCameraLensDirection = CameraLensDirection.back});
 
   final CustomPaint? customPaint;
   final Function(InputImage inputImage) onImage;
@@ -32,7 +31,7 @@ class _CameraViewState extends State<CameraView> {
   static List<CameraDescription> _cameras = [];
   CameraController? _controller;
   int _cameraIndex = -1;
-  bool _changingCameraLens = false;
+  final bool _changingCameraLens = false;
   bool isRecording = false;
 
   @override
@@ -102,24 +101,6 @@ class _CameraViewState extends State<CameraView> {
     );
   }
 
-  Widget _detectionViewModeToggle() => Positioned(
-        bottom: 8,
-        left: 8,
-        child: SizedBox(
-          height: 50.0,
-          width: 50.0,
-          child: FloatingActionButton(
-            heroTag: Object(),
-            onPressed: widget.onDetectorViewModeChanged,
-            backgroundColor: Colors.black54,
-            child: Icon(
-              Icons.photo_library_outlined,
-              size: 25,
-            ),
-          ),
-        ),
-      );
-
   Widget _switchLiveCameraToggle() => Positioned(
         bottom: 8,
         right: 0,
@@ -143,6 +124,7 @@ class _CameraViewState extends State<CameraView> {
                     },
                   );
                   var gif = await screenController.exporter.exportGif();
+                  if (!mounted) return;
                   Navigator.of(context).pop();
                   showDialog(
                     context: context,
@@ -157,7 +139,7 @@ class _CameraViewState extends State<CameraView> {
                   //   builder: (_) => ShowVideoScreen(filePath: videoDirectory),
                   // ));
                 } catch (e) {
-                  print("ag path erro: " + e.toString());
+                  debugPrint("ag path erro: $e");
                 }
                 // XFile? file = await _controller?.stopVideoRecording();
                 setState(() {
@@ -274,7 +256,9 @@ class _CameraViewState extends State<CameraView> {
     } else if (Platform.isAndroid) {
       var rotationCompensation =
           _orientations[_controller!.value.deviceOrientation];
-      if (rotationCompensation == null) return null;
+      if (rotationCompensation == null) {
+        return null;
+      }
       if (camera.lensDirection == CameraLensDirection.front) {
         // front-facing
         rotationCompensation = (sensorOrientation + rotationCompensation) % 360;
@@ -290,7 +274,9 @@ class _CameraViewState extends State<CameraView> {
     final format = InputImageFormatValue.fromRawValue(image.format.raw);
     if (format == null ||
         (Platform.isAndroid && format != InputImageFormat.nv21) ||
-        (Platform.isIOS && format != InputImageFormat.bgra8888)) return null;
+        (Platform.isIOS && format != InputImageFormat.bgra8888)) {
+      return null;
+    }
 
     // since format is constraint to nv21 or bgra8888, both only have one plane
     if (image.planes.length != 1) return null;
